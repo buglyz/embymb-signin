@@ -1,0 +1,23 @@
+name: embymb daily sign-in
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # UTC 00:00 = CST 08:00
+  workflow_dispatch:       # 手动触发
+
+jobs:
+  signin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run sign-in
+        env:
+          EMBYMB_USER: ${{ secrets.EMBYMB_USER }}
+          EMBYMB_PASS: ${{ secrets.EMBYMB_PASS }}
+        run: python3 signin.py
